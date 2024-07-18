@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Drawing</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <h1>Trajectory Data Generatory</h1>
+    <div>
+        <p>
+            This is pretty simple tool intended to generate small data sets for testing purposes.
+            <br>
+            For each path, pick a color, a start time, an end time, and a time delta.
+            Then hit "New Path" to start drawing on the canvas.
+            <br>
+            Clear all paths and clear last path have pretty straightforward functions.
+            <br>
+            Use export paths to export the data to a CSV file. The format is X, Y, Date, TrackId.
+            <br>
+            The start time, end time, and time delta work as follows:
+        </p>
+        <ul>
+            <li>Start time is the timestamp of the first point in the path.</li>
+            <li>End time is the timestamp of the last point in the path.</li>
+            <li>Time delta is the time between each point in the path.</li>
+        </ul>
+        <p>
+
+            The exported data will be sampled such that (end time - start time)/time delta will be the number of points
+            in
+            the
+            path and these are smoothly picked across the path.
+        </p>
+    </div>
+    <hr style="width: 100%;">
+    <div>
+        <h2>Settings:</h2>
+        <br>
+        <label for="colorPicker">Color: </label>
+        <input type="color" id="colorPicker" value="#000000">
+        <br>
+        <label for="startTime">Start time (s): </label>
+        <input type="number" id="startTime" value="0">
+        <label for="endTime">End time (s): </label>
+        <input type="number" id="endTime" value="1000">
+        <label for="timeDelta">Time delta (s): </label>
+        <input type="number" id="timeDelta" value="100">
+        <br>
+        <button id="newPathButton">New Path</button>
+        <button id="clearAllButton">Clear All Paths</button>
+        <button id="clearLastButton">Clear Last Path</button>
+        <button id="exportButton">Export Paths</button>
+    </div>
+    <canvas id="drawingCanvas" width="800" height="600"></canvas>
+
+    <script>
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.getElementById('colorPicker').value = '#ffffff';
+        }
+    </script>
+</body>
+
+</html>
