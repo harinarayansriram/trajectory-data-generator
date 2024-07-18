@@ -26,7 +26,7 @@ canvas.addEventListener('mouseleave', stopDrawing);
 
 clearAllButton.addEventListener('click', clearAllPaths);
 clearLastButton.addEventListener('click', clearLastPath);
-exportButton.addEventListener('click', exportPaths2);
+exportButton.addEventListener('click', exportPaths);
 
 colorPicker.addEventListener('input', e => currentColor = e.target.value);
 startTimeInput.addEventListener('input', e => startTime = parseInt(e.target.value));
@@ -89,25 +89,6 @@ function redrawPaths() {
     });
 }
 
-function exportPaths() {
-    const exportedPaths = paths.map(({ color, path, startTime, endTime, timeDelta }) => {
-        const duration = endTime - startTime;
-        const totalPoints = Math.ceil(duration / timeDelta);
-        const sampledPoints = [];
-
-        for (let i = 0; i <= totalPoints; i++) {
-            const t = i / totalPoints;
-            const index = Math.floor(t * (path.length - 1));
-            sampledPoints.push({ ...path[index], time: startTime + i * timeDelta });
-        }
-
-        return { color, sampledPoints, startTime, endTime, timeDelta };
-    });
-
-    console.log('Exported Paths:', JSON.stringify(exportedPaths, null, 2));
-    alert('Paths exported to console.');
-}
-
 /**
  * Convert a 2D array into a CSV string
  * Source: https://stackoverflow.com/questions/14964035/how-to-export-javascript-array-info-to-csv-on-client-side
@@ -138,13 +119,13 @@ function downloadBlob(content, filename, contentType) {
     link.click();
 }
 
-function exportPaths2() {
+function exportPaths() {
+    let sampledPoints = [['X', 'Y', 'Date', 'TrackId']];
+
     for (let pathId = 0; pathId < paths.length; pathId++) {
         const { color, path, startTime, endTime, timeDelta } = paths[pathId];
         const duration = endTime - startTime;
         const totalPoints = Math.ceil(duration / timeDelta);
-
-        let sampledPoints = [['X', 'Y', 'Date', 'TrackId']];
         for (let i = 0; i <= totalPoints; i++) {
             const t = i / totalPoints;
             const index = Math.floor(t * (path.length - 1));
